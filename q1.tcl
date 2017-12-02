@@ -28,8 +28,14 @@ namespace eval fnCostTasks1 {
     chan puts $cdown [array get event]
     flush $cdown
     set data [chan read $cdown]
+    flush $cdown
     close $cdown
-    puts $data
+
+    set fp [::open "reporte.xlsx" w+]
+    fconfigure $fp -buffering full -translation binary
+    puts $fp $data
+    flush $fp
+    close $fp
   }
 
   proc 'do'update { resp } {
