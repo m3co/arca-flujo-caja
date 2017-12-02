@@ -18,15 +18,18 @@ namespace eval fnCostTasks1 {
   }
 
   proc 'do'download { resp } {
-    return "await-next"
-  }
-
-  proc 'do'download'next { data } {
-    puts "aqui comenzamos"
-    set out [open "report.xlsx" w+]
-    puts "esto es $out"
-    puts $out $data
-    close $out
+    set cdown [socket localhost 12346]
+    chan configure $cdown -buffering full -translation binary
+    array set event {
+      query download
+      module fnCostTasks1
+      filename resultado.xlsx
+    }
+    chan puts $cdown [array get event]
+    flush $cdown
+    set data [chan read $cdown]
+    close $cdown
+    puts $data
   }
 
   proc 'do'update { resp } {
