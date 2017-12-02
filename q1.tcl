@@ -17,6 +17,18 @@ namespace eval fnCostTasks1 {
     chan puts $MAIN::chan [array get event]
   }
 
+  proc 'do'download { resp } {
+    return "await-next"
+  }
+
+  proc 'do'download'next { data } {
+    puts "aqui comenzamos"
+    set out [open "report.xlsx" w+]
+    puts "esto es $out"
+    puts $out $data
+    close $out
+  }
+
   proc 'do'update { resp } {
     variable frame
     variable project
