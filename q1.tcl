@@ -17,13 +17,12 @@ namespace eval fnCostTasks1 {
     chan puts $MAIN::chan [array get event]
   }
 
-  proc 'do'download { resp } {
+  proc 'do'download1 { resp } {
     set cdown [socket localhost 12346]
     chan configure $cdown -buffering full -translation binary
     array set event {
-      query download
+      query download1
       module fnCostTasks1
-      filename resultado.xlsx
     }
     chan puts $cdown [array get event]
     flush $cdown
@@ -31,7 +30,27 @@ namespace eval fnCostTasks1 {
     flush $cdown
     close $cdown
 
-    set fp [::open "reporte.xlsx" w+]
+    set fp [::open "reporte1.xlsx" w+]
+    fconfigure $fp -buffering full -translation binary
+    puts $fp $data
+    flush $fp
+    close $fp
+  }
+
+  proc 'do'download2 { resp } {
+    set cdown [socket localhost 12346]
+    chan configure $cdown -buffering full -translation binary
+    array set event {
+      query download2
+      module fnCostTasks1
+    }
+    chan puts $cdown [array get event]
+    flush $cdown
+    set data [chan read $cdown]
+    flush $cdown
+    close $cdown
+
+    set fp [::open "reporte2.xlsx" w+]
     fconfigure $fp -buffering full -translation binary
     puts $fp $data
     flush $fp
