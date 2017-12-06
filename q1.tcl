@@ -19,6 +19,7 @@ namespace eval fnCostTasks1 {
 
   proc 'do'download { resp } {
     upvar $resp response
+   #set cdown [socket {x12.m3c.space} 12346]
     set cdown [socket localhost 12346]
     chan configure $cdown -buffering full -translation binary
     array set event {
