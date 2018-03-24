@@ -1,6 +1,9 @@
 'use strict';
 (() => {
 var APUIdSymbol = Symbol();
+var columns = ['APUId', 'constrain'];
+var date = (d) => d.toISOString().split('T')[0];
+var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
 
@@ -9,14 +12,15 @@ function QtakeoffCostsFlow() {
     if (found) {
       row.start = row.start ? new Date(row.start) : null;
       row.end = row.end ? new Date(row.end) : null;
-      if (found.periods.find(d => d.start.valueOf() == row.start.valueOf() &&
-        d.end.valueOf() == row.end.valueOf())) {
+      if (found.periods[period(row)]) {
         return;
       }
-      found.periods.push({
-        start: row.start,
-        end: row.end
-      });
+      found.periods[period(row)] = Object.keys(row)
+      .filter(d => d.indexOf('cost') > -1)
+      .reduce((acc, d) => {
+        acc[d] = row[d];
+        return acc;
+      }, {});
     } else {
       insertTask(row);
     }
@@ -34,13 +38,18 @@ function QtakeoffCostsFlow() {
         }
         return acc;
       }, []).join('');
-
-    row.periods = [{
-      start: row.start,
-      end: row.end
-    }];
+    row.periods = {};
+    row.periods[period(row)] = Object.keys(row)
+      .filter(d => d.indexOf('cost') > -1)
+      .reduce((acc, d) => {
+        acc[d] = row[d];
+        return acc;
+      }, {});
     delete row.start;
     delete row.end;
+    Object.keys(row).filter(d => d.indexOf('cost') > -1).forEach(d => {
+      delete row[d];
+    });
     tasks.push(row);
     tasks.sort((a, b) => {
       if (a[APUIdSymbol] > b[APUIdSymbol]) return 1;
@@ -49,8 +58,23 @@ function QtakeoffCostsFlow() {
     });
   }
 
+  var tbody = d3.select('tbody');
   function renderRows() {
-    console.log(tasks);
+    var trs = tbody.selectAll('tr.row').data(tasks);
+    var tr = trs.enter().append('tr')
+      .attr('class', 'row');
+
+    tr.selectAll('td.fixed-column')
+      .data(d => columns.map(c => d[c])).enter()
+      .append('td')
+        .attr('class', 'fixed-column')
+        .text(d => d);
+
+    tr.selectAll('td.flow-column')
+      .data(d => d.periods).enter()
+      .append('td')
+        .attr('class', 'flow-column')
+        .text(d => d.start);
   }
   this.doselect = doselect;
 }
