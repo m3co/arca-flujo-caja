@@ -6,7 +6,7 @@
 
     client.emit('data', {
       query: 'select',
-      module: 'viewQtakeoff1MonthFlow'
+      module: 'viewQtakeoffCosts1MonthFlow'
     });
 
   });
