@@ -95,6 +95,17 @@ function QtakeoffCostsFlow() {
       .append('td')
         .attr('class', 'fixed-column')
         .text(d => d);
+
+    var trs = tr.selectAll('td.flow-column')
+      .data(d => periods.map(key => ({
+          cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null
+        })))
+      .text(d => d.cost);
+
+    trs.enter()
+      .append('td')
+        .attr('class', 'flow-column')
+        .text(d => d.cost);
   }
   this.doselect = doselect;
 }
