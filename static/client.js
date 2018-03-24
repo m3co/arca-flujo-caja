@@ -5,7 +5,7 @@
     console.log('connection');
 
     client.emit('data', {
-      query: 'query',
+      query: 'select',
       module: 'viewQtakeoff1MonthFlow'
     });
 
