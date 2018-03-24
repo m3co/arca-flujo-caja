@@ -13,7 +13,7 @@
 
   client.on('response', (data) => {
     var query = data.query;
-    console.log('not processed', data);
+    qtakeoffcostsflow.doselect(data.row);
   });
   window.client = client;
 })(io);
