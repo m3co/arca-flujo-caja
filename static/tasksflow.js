@@ -6,21 +6,27 @@ var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
+  var periods = [];
 
   function doselect(row) {
     var found = tasks.find(d => d.id == row.id);
     if (found) {
       row.start = row.start ? new Date(row.start) : null;
       row.end = row.end ? new Date(row.end) : null;
-      if (found.periods[period(row)]) {
+      var p = period(row);
+      if (found.periods[p]) {
         return;
       }
-      found.periods[period(row)] = Object.keys(row)
+      found.periods[p] = Object.keys(row)
       .filter(d => d.indexOf('cost') > -1)
       .reduce((acc, d) => {
         acc[d] = row[d];
         return acc;
       }, {});
+      if (periods.indexOf(p) == -1) {
+        periods.push(p);
+        periods.sort();
+      }
     } else {
       insertTask(row);
     }
@@ -30,6 +36,7 @@ function QtakeoffCostsFlow() {
   function insertTask(row) {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
+    var p = period(row);
     row[APUIdSymbol] = row.APUId.split('.')
       .reduce((acc, d, i, array) => {
         acc.push(`${'0'.repeat(5 - d.length)}${d}`);
@@ -39,7 +46,11 @@ function QtakeoffCostsFlow() {
         return acc;
       }, []).join('');
     row.periods = {};
-    row.periods[period(row)] = Object.keys(row)
+    if (periods.indexOf(p) == -1) {
+      periods.push(p);
+      periods.sort();
+    }
+    row.periods[p] = Object.keys(row)
       .filter(d => d.indexOf('cost') > -1)
       .reduce((acc, d) => {
         acc[d] = row[d];
@@ -59,22 +70,31 @@ function QtakeoffCostsFlow() {
   }
 
   var tbody = d3.select('tbody');
+  var thead = d3.select('thead tr');
   function renderRows() {
-    var trs = tbody.selectAll('tr.row').data(tasks);
-    var tr = trs.enter().append('tr')
-      .attr('class', 'row');
+    var ths = thead.selectAll('th.flow-header')
+      .data(periods);
+    ths.text(d => d.split(' ')[1].slice(0, 7));
 
+    ths.enter().append('th')
+      .attr('class', 'flow-header')
+      .text(d => d.split(' ')[1].slice(0, 7));
+
+    var tr = tbody.selectAll('tr').data(tasks);
     tr.selectAll('td.fixed-column')
-      .data(d => columns.map(c => d[c])).enter()
+      .data(d => columns.map(key => d[key]))
+      .text(d => d);
+
+    tr.enter().append('tr');
+
+    var trs = tr.selectAll('td.fixed-column')
+      .data(d => columns.map(key => d[key]))
+      .text(d => d);
+
+    trs.enter()
       .append('td')
         .attr('class', 'fixed-column')
         .text(d => d);
-
-    tr.selectAll('td.flow-column')
-      .data(d => d.periods).enter()
-      .append('td')
-        .attr('class', 'flow-column')
-        .text(d => d.start);
   }
   this.doselect = doselect;
 }
