@@ -100,12 +100,12 @@ function QtakeoffCostsFlow() {
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null
         })))
-      .text(d => d.cost);
+      .text(d => `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`);
 
     trs.enter()
       .append('td')
         .attr('class', 'flow-column')
-        .text(d => d.cost);
+        .text(d => `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`);
   }
   this.doselect = doselect;
 }
