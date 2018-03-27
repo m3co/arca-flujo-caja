@@ -83,6 +83,9 @@ function QtakeoffCostsFlow() {
       .text(d => d.split(' ')[1].slice(0, 7));
 
     var tr = tbody.selectAll('tr').data(tasks);
+    tr.style('background-color', (d, i) => {
+        return i % 2 ? 'white' : '#f0f0f0';
+      });
     tr.selectAll('td.fixed-column')
       .data(d => columns.map(key => ({
         key: key,
@@ -91,7 +94,10 @@ function QtakeoffCostsFlow() {
       })))
       .text(d => d.value);
 
-    tr.enter().append('tr');
+    tr.enter().append('tr')
+      .style('background-color', (d, i) => {
+        return i % 2 ? 'white' : '#f0f0f0';
+      });
 
     var trs = tr.selectAll('td.fixed-column')
       .data(d => columns.map(key => ({
