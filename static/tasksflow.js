@@ -1,7 +1,7 @@
 'use strict';
 (() => {
 var APUIdSymbol = Symbol();
-var columns = ['APUId', 'constrain'];
+var columns = ['id', 'parent', 'description', 'unit'];
 var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
@@ -37,7 +37,7 @@ function QtakeoffCostsFlow() {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
     var p = period(row);
-    row[APUIdSymbol] = row.APUId.split('.')
+    row[APUIdSymbol] = row.id.split('.')
       .reduce((acc, d, i, array) => {
         acc.push(`${'0'.repeat(5 - d.length)}${d}`);
         if (i + 1 == array.length) {
