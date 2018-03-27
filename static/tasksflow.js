@@ -1,12 +1,13 @@
 'use strict';
 (() => {
 var APUIdSymbol = Symbol();
-var columns = ['id', 'parent', 'description', 'unit'];
+var columns = ['expand', 'id', 'parent', 'description', 'unit'];
 var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
   var periods = [];
+  window.tasks = tasks;
 
   function doselect(row) {
     var found = tasks.find(d => d.id == row.id);
@@ -36,6 +37,7 @@ function QtakeoffCostsFlow() {
   function insertTask(row) {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
+    row.expand = '+';
     var p = period(row);
     row[APUIdSymbol] = row.id.split('.')
       .reduce((acc, d, i, array) => {
@@ -82,30 +84,62 @@ function QtakeoffCostsFlow() {
 
     var tr = tbody.selectAll('tr').data(tasks);
     tr.selectAll('td.fixed-column')
-      .data(d => columns.map(key => d[key]))
-      .text(d => d);
+      .data(d => columns.map(key => ({
+        key: key,
+        value: d[key],
+        row: d
+      })))
+      .text(d => d.value);
 
     tr.enter().append('tr');
 
     var trs = tr.selectAll('td.fixed-column')
-      .data(d => columns.map(key => d[key]))
-      .text(d => d);
+      .data(d => columns.map(key => ({
+        key: key,
+        value: d[key],
+        row: d
+      })))
+      .each(function(d) {
+        if (d.key == 'expand') {
+          d3.select(this).on('click', null);
+          d3.select(this).on('click', () => {
+            client.emit('data',{
+              query: 'select',
+              module: 'viewCosts1MonthFlow',
+              parent: d.row.id
+            });
+          });
+        }
+      })
+      .text(d => d.value);
 
     trs.enter()
       .append('td')
         .attr('class', 'fixed-column')
-        .text(d => d);
+        .each(function(d) {
+          if (d.key == 'expand') {
+            d3.select(this).on('click', null);
+            d3.select(this).on('click', () => {
+              client.emit('data',{
+                query: 'select',
+                module: 'viewCosts1MonthFlow',
+                parent: d.row.id
+              });
+            });
+          }
+        })
+        .text(d => d.value);
 
     var trs = tr.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null
         })))
-      .text(d => `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`);
+      .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '');
 
     trs.enter()
       .append('td')
         .attr('class', 'flow-column')
-        .text(d => `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`);
+        .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '');
   }
   this.doselect = doselect;
 }
