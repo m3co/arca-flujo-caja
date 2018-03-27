@@ -1,7 +1,7 @@
 'use strict';
 (() => {
 var APUIdSymbol = Symbol();
-var columns = ['expand', 'id', 'parent', 'description', 'unit'];
+var columns = ['id', 'parent', 'description', 'unit'];
 var levels = ['brown', 'red', 'blue', 'green'];
 var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
@@ -38,7 +38,7 @@ function QtakeoffCostsFlow() {
   function insertTask(row) {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
-    row.expand = '+';
+    row.expanded = '+';
     var p = period(row);
     row[APUIdSymbol] = row.id.split('.')
       .reduce((acc, d, i, array) => {
@@ -106,43 +106,19 @@ function QtakeoffCostsFlow() {
         value: d[key],
         row: d
       })))
-      .each(function(d) {
-        if (d.key == 'expand') {
-          d3.select(this).on('click', null);
-          d3.select(this).on('click', () => {
-            client.emit('data',{
-              query: 'select',
-              module: 'viewCosts1MonthFlow',
-              parent: d.row.id
-            });
-          });
-        }
-      })
       .text(d => d.value)
       .style('color', d => {
         var level = levels[d.row.id.split('.').length - 1];
-        return level ? level : 'black';
+        return d.row.expand ? (level ? level : 'black') : 'black';
       });
 
     trs.enter()
       .append('td')
         .attr('class', 'fixed-column')
-        .each(function(d) {
-          if (d.key == 'expand') {
-            d3.select(this).on('click', null);
-            d3.select(this).on('click', () => {
-              client.emit('data',{
-                query: 'select',
-                module: 'viewCosts1MonthFlow',
-                parent: d.row.id
-              });
-            });
-          }
-        })
         .text(d => d.value)
         .style('color', d => {
           var level = levels[d.row.id.split('.').length - 1];
-          return level ? level : 'black';
+          return d.row.expand ? (level ? level : 'black') : 'black';
         });
 
     var trs = tr.selectAll('td.flow-column')
@@ -153,7 +129,7 @@ function QtakeoffCostsFlow() {
       .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
       .style('color', d => {
         var level = levels[d.row.id.split('.').length - 1];
-        return level ? level : 'black';
+        return d.row.expand ? (level ? level : 'black') : 'black';
       });
 
     trs.enter()
@@ -162,7 +138,7 @@ function QtakeoffCostsFlow() {
         .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
         .style('color', d => {
           var level = levels[d.row.id.split('.').length - 1];
-          return level ? level : 'black';
+          return d.row.expand ? (level ? level : 'black') : 'black';
         });
   }
   this.doselect = doselect;

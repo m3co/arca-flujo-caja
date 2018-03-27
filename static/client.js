@@ -7,7 +7,7 @@
     client.emit('data', {
       query: 'select',
       module: 'viewCosts1MonthFlow',
-      id: '2'
+      project: '2'
     });
 
   });
