@@ -2,6 +2,7 @@
 (() => {
 var APUIdSymbol = Symbol();
 var columns = ['expand', 'id', 'parent', 'description', 'unit'];
+var levels = ['brown', 'red', 'blue', 'green'];
 var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
@@ -117,7 +118,11 @@ function QtakeoffCostsFlow() {
           });
         }
       })
-      .text(d => d.value);
+      .text(d => d.value)
+      .style('color', d => {
+        var level = levels[d.row.id.split('.').length - 1];
+        return level ? level : 'black';
+      });
 
     trs.enter()
       .append('td')
@@ -134,18 +139,31 @@ function QtakeoffCostsFlow() {
             });
           }
         })
-        .text(d => d.value);
+        .text(d => d.value)
+        .style('color', d => {
+          var level = levels[d.row.id.split('.').length - 1];
+          return level ? level : 'black';
+        });
 
     var trs = tr.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
-          cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null
+          cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null,
+          row: d
         })))
-      .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '');
+      .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
+      .style('color', d => {
+        var level = levels[d.row.id.split('.').length - 1];
+        return level ? level : 'black';
+      });
 
     trs.enter()
       .append('td')
         .attr('class', 'flow-column')
-        .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '');
+        .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
+        .style('color', d => {
+          var level = levels[d.row.id.split('.').length - 1];
+          return level ? level : 'black';
+        });
   }
   this.doselect = doselect;
 }
