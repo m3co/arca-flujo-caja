@@ -1,7 +1,7 @@
 'use strict';
 (() => {
 var APUIdSymbol = Symbol();
-var columns = ['id', 'parent', 'description', 'unit'];
+var columns = ['id', 'parent', 'description', 'unit', 'total'];
 var levels = ['brown', 'red', 'blue', 'green'];
 var date = (d) => d.toISOString().split('T')[0];
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
@@ -38,7 +38,6 @@ function QtakeoffCostsFlow() {
   function insertTask(row) {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
-    row.expanded = '+';
     var p = period(row);
     row[APUIdSymbol] = row.id.split('.')
       .reduce((acc, d, i, array) => {
@@ -87,13 +86,6 @@ function QtakeoffCostsFlow() {
     tr.style('background-color', (d, i) => {
         return i % 2 ? 'white' : '#f0f0f0';
       });
-    tr.selectAll('td.fixed-column')
-      .data(d => columns.map(key => ({
-        key: key,
-        value: d[key],
-        row: d
-      })))
-      .text(d => d.value);
 
     tr.enter().append('tr')
       .style('background-color', (d, i) => {
@@ -106,7 +98,15 @@ function QtakeoffCostsFlow() {
         value: d[key],
         row: d
       })))
-      .text(d => d.value)
+      .text(d => {
+        if (d.key === 'total') {
+          return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
+            acc += d.row.periods[key].cost;
+            return acc;
+          }, 0).toFixed(0)).toLocaleString()}`;
+        }
+        return d.value;
+      })
       .style('color', d => {
         var level = levels[d.row.id.split('.').length - 1];
         return d.row.expand ? (level ? level : 'black') : 'black';
