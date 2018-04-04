@@ -3,7 +3,9 @@
 var APUIdSymbol = Symbol();
 var columns = ['id', 'parent', 'description', 'unit', 'total'];
 var levels = ['brown', 'red', 'blue', 'green'];
-var date = (d) => d.toISOString().split('T')[0];
+var date = (d) => {
+  return d instanceof Date ? d.toISOString().split('T')[0] : null;
+};
 var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
