@@ -74,15 +74,18 @@ function QtakeoffCostsFlow() {
   }
 
   var tbody = d3.select('tbody');
-  var thead = d3.select('thead tr');
   function renderRows() {
-    var ths = thead.selectAll('th.flow-header')
-      .data(periods);
-    ths.text(d => d.split(' ')[1].slice(0, 7));
+    var ths = d3.select('thead tr.periods').selectAll('th.flow-header')
+      .data(periods).text(d => d.split(' ')[1].slice(0, 7));
 
     ths.enter().append('th')
       .attr('class', 'flow-header')
       .text(d => d.split(' ')[1].slice(0, 7));
+
+    d3.select('thead tr').selectAll('th.flow-header')
+      .data(periods).enter().append('th')
+        .attr('class', 'flow-header')
+        .text((d, i) => i + 1);
 
     var tr = tbody.selectAll('tr').data(tasks);
     tr.style('background-color', (d, i) => {
