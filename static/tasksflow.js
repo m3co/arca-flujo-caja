@@ -10,7 +10,7 @@ var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
   var periods = [];
-  window.tasks = tasks;
+  var lastSTO = null;
 
   function doselect(row) {
     var found = tasks.find(d => d.id == row.id);
@@ -34,7 +34,13 @@ function QtakeoffCostsFlow() {
     } else {
       insertTask(row);
     }
-    renderRows();
+    if (lastSTO) {
+      clearTimeout(lastSTO);
+    }
+    lastSTO = setTimeout(() => {
+      if (lastSTO < 100) return;
+      renderRows();
+    }, 200);
   }
 
   function insertTask(row) {
