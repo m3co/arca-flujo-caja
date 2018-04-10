@@ -110,25 +110,20 @@ function QtakeoffCostsFlow() {
           key: key,
           value: d[key],
           row: d
-        })))
-      .text(d => {
-        if (d.key === 'total') {
-          return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
-            acc += d.row.periods[key].cost;
-            return acc;
-          }, 0).toFixed(0)).toLocaleString()}`;
-        }
-        return d.value;
-      })
-      .style('color', d => {
-        var level = levels[d.row.id.split('.').length - 1];
-        return d.row.expand ? (level ? level : 'black') : 'black';
-      });
+        })));
 
     trs.enter()
       .append('td')
         .attr('class', 'fixed-column')
-        .text(d => d.value)
+        .text(d => {
+          if (d.key === 'total') {
+            return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
+              acc += d.row.periods[key].cost;
+              return acc;
+            }, 0).toFixed(0)).toLocaleString()}`;
+          }
+          return d.value;
+        })
         .style('color', d => {
           var level = levels[d.row.id.split('.').length - 1];
           return d.row.expand ? (level ? level : 'black') : 'black';
