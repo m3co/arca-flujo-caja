@@ -106,13 +106,11 @@ function QtakeoffCostsFlow() {
       });
 
     var trs = w.selectAll('td.fixed-column')
-      .data(d => {
-        return columns.map(key => ({
+      .data(d => columns.map(key => ({
           key: key,
           value: d[key],
           row: d
-        }));
-      })
+        })))
       .text(d => {
         if (d.key === 'total') {
           return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
@@ -136,7 +134,7 @@ function QtakeoffCostsFlow() {
           return d.row.expand ? (level ? level : 'black') : 'black';
         });
 
-    var trs = tr.selectAll('td.flow-column')
+    var trs = w.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null,
           row: d
