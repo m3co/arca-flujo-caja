@@ -10,7 +10,9 @@ var period = (row) => `${date(row.start)} ${date(row.end)}`;
 function QtakeoffCostsFlow() {
   var tasks = [];
   var periods = [];
+  var lastSTO = null;
   window.tasks = tasks;
+  window.periods = periods;
 
   function doselect(row) {
     var found = tasks.find(d => d.id == row.id);
@@ -34,7 +36,13 @@ function QtakeoffCostsFlow() {
     } else {
       insertTask(row);
     }
-    renderRows();
+    if (lastSTO) {
+      clearTimeout(lastSTO);
+    }
+    lastSTO = setTimeout(() => {
+      if (lastSTO < 100) return;
+      renderRows();
+    }, 200);
   }
 
   function insertTask(row) {
@@ -92,17 +100,19 @@ function QtakeoffCostsFlow() {
         return i % 2 ? 'white' : '#f0f0f0';
       });
 
-    tr.enter().append('tr')
+    var w = tr.enter().append('tr')
       .style('background-color', (d, i) => {
         return i % 2 ? 'white' : '#f0f0f0';
       });
 
-    var trs = tr.selectAll('td.fixed-column')
-      .data(d => columns.map(key => ({
-        key: key,
-        value: d[key],
-        row: d
-      })))
+    var trs = w.selectAll('td.fixed-column')
+      .data(d => {
+        return columns.map(key => ({
+          key: key,
+          value: d[key],
+          row: d
+        }));
+      })
       .text(d => {
         if (d.key === 'total') {
           return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
