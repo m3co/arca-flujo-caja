@@ -1,5 +1,8 @@
 'use strict';
 (() => {
+document.querySelector('select').addEventListener('change', e => {
+  document.querySelector('table').setAttribute('show', e.target.value);
+});
 var APUIdSymbol = Symbol();
 var columns = ['id', 'description', 'unit', 'total'];
 var levels = ['brown', 'red', 'blue', 'green'];
@@ -24,7 +27,7 @@ function QtakeoffCostsFlow() {
         return;
       }
       found.periods[p] = Object.keys(row)
-      .filter(d => d.indexOf('cost') > -1)
+      .filter(d => d == 'qop' || d.indexOf('cost') > -1)
       .reduce((acc, d) => {
         acc[d] = row[d];
         return acc;
@@ -132,6 +135,7 @@ function QtakeoffCostsFlow() {
     var trs = w.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null,
+          qop: d.periods[key] ? Number(d.periods[key].qop) : null,
           row: d
         })))
       .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
@@ -143,7 +147,18 @@ function QtakeoffCostsFlow() {
     trs.enter()
       .append('td')
         .attr('class', 'flow-column')
-        .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
+        .each(function(d, i, m) {
+          d3.select(this).append('span')
+            .classed('cost', true)
+            .text(d => d.cost
+              ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`
+              : '');
+          d3.select(this).append('span')
+            .classed('qop', true)
+            .text(d => d.qop
+              ? `${Number(Number(d.qop).toFixed(2)).toLocaleString()}`
+              : '');
+        })
         .style('color', d => {
           var level = levels[d.row.id.split('.').length - 1];
           return d.row.expand ? (level ? level : 'black') : 'black';
