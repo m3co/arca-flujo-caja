@@ -3,7 +3,7 @@
 document.querySelector('select').addEventListener('change', e => {
   document.querySelector('table').setAttribute('show', e.target.value);
 });
-var APUIdSymbol = Symbol();
+var AAUIdSymbol = Symbol();
 var columns = ['id', 'description', 'unit', 'total'];
 var levels = ['brown', 'red', 'blue', 'green'];
 var date = (d) => {
