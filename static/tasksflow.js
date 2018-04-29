@@ -52,7 +52,7 @@ function QtakeoffCostsFlow() {
     row.start = row.start ? new Date(row.start) : null;
     row.end = row.end ? new Date(row.end) : null;
     var p = period(row);
-    row[APUIdSymbol] = row.id.split('.')
+    row[AAUIdSymbol] = row.id.split('.')
       .reduce((acc, d, i, array) => {
         acc.push(`${'0'.repeat(5 - d.length)}${d}`);
         if (i + 1 == array.length) {
@@ -78,8 +78,8 @@ function QtakeoffCostsFlow() {
     });
     tasks.push(row);
     tasks.sort((a, b) => {
-      if (a[APUIdSymbol] > b[APUIdSymbol]) return 1;
-      if (a[APUIdSymbol] < b[APUIdSymbol]) return -1;
+      if (a[AAUIdSymbol] > b[AAUIdSymbol]) return 1;
+      if (a[AAUIdSymbol] < b[AAUIdSymbol]) return -1;
       return 0;
     });
   }
