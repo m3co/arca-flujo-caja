@@ -128,6 +128,9 @@ function QtakeoffCostsFlow() {
           return d.value;
         })
         .style('color', d => {
+          if (d.row.APU_defined) {
+            return 'yellow';
+          }
           var level = levels[d.row.id.split('.').length - 1];
           return d.row.expand ? (level ? level : 'black') : 'black';
         });
@@ -140,6 +143,9 @@ function QtakeoffCostsFlow() {
         })))
       .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
       .style('color', d => {
+        if (d.row.APU_defined) {
+          return 'yellow';
+        }
         var level = levels[d.row.id.split('.').length - 1];
         return d.row.expand ? (level ? level : 'black') : 'black';
       });
@@ -160,6 +166,9 @@ function QtakeoffCostsFlow() {
               : '');
         })
         .style('color', d => {
+          if (d.row.APU_defined) {
+            return 'yellow';
+          }
           var level = levels[d.row.id.split('.').length - 1];
           return d.row.expand ? (level ? level : 'black') : 'black';
         });
