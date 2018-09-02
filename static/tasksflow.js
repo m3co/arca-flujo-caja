@@ -27,11 +27,11 @@ function QtakeoffCostsFlow() {
         return;
       }
       found.periods[p] = Object.keys(row)
-      .filter(d => d == 'qop' || d.indexOf('cost') > -1)
-      .reduce((acc, d) => {
-        acc[d] = row[d];
-        return acc;
-      }, {});
+        .filter(d => d == 'qop' || d.indexOf('cost') > -1)
+        .reduce((acc, d) => {
+          acc[d] = row[d];
+          return acc;
+        }, {});
       if (periods.indexOf(p) == -1) {
         periods.push(p);
         periods.sort();
@@ -66,7 +66,7 @@ function QtakeoffCostsFlow() {
       periods.sort();
     }
     row.periods[p] = Object.keys(row)
-      .filter(d => d.indexOf('cost') > -1)
+      .filter(d => d == 'qop' || d.indexOf('cost') > -1)
       .reduce((acc, d) => {
         acc[d] = row[d];
         return acc;
@@ -118,14 +118,23 @@ function QtakeoffCostsFlow() {
     trs.enter()
       .append('td')
         .attr('class', 'fixed-column')
-        .text(d => {
+        .text(d => d.value)
+        .each(function(d, i, m) {
           if (d.key === 'total') {
-            return `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
-              acc += d.row.periods[key].cost;
+            d3.select(this).append('span')
+              .classed('cost', true)
+              .text(d => `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
+              acc += d.row.periods[key].cost ? d.row.periods[key].cost : 0;
               return acc;
-            }, 0).toFixed(0)).toLocaleString()}`;
+            }, 0).toFixed(0)).toLocaleString()}`);
+            d3.select(this).append('span')
+              .classed('qop', true)
+              .text(d => `${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
+              acc += d.row.periods[key].qop ? d.row.periods[key].qop : 0;
+              return acc;
+            }, 0).toFixed(2)).toLocaleString()}`);
+            return;
           }
-          return d.value;
         })
         .style('color', d => {
           if (d.row.APU_defined) {
@@ -138,7 +147,7 @@ function QtakeoffCostsFlow() {
     var trs = w.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null,
-          qop: d.periods[key] ? Number(d.periods[key].qop) : null,
+          qop: d.periods[key] ? Number(d.periods[key].qop).toFixed(2) : null,
           row: d
         })))
       .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
