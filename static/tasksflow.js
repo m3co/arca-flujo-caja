@@ -142,18 +142,21 @@ function QtakeoffCostsFlow() {
         .text(d => d.value)
         .each(function(d, i, m) {
           if (d.key === 'total') {
-            d3.select(this).append('div')
-              .classed('cost', true)
-              .text(d => `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
-              acc += d.row.periods[key].cost ? d.row.periods[key].cost : 0;
-              return acc;
-            }, 0).toFixed(0)).toLocaleString()}`);
+            costs.forEach(cost =>
+              d3.select(this).append('div')
+                .classed(cost, true)
+                .text(d => `$${Number(Object.keys(d.row.periods)
+                  .reduce((acc, key, i, arr) => {
+                    acc += d.row.periods[key][cost] ? d.row.periods[key][cost] : 0;
+                    return acc;
+                  }, 0).toFixed(0)).toLocaleString()}`));
             d3.select(this).append('div')
               .classed('qop', true)
-              .text(d => `${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
-              acc += d.row.periods[key].qop ? d.row.periods[key].qop : 0;
-              return acc;
-            }, 0).toFixed(2)).toLocaleString()}`);
+              .text(d => `${Number(Object.keys(d.row.periods)
+                .reduce((acc, key, i, arr) => {
+                  acc += d.row.periods[key].qop ? d.row.periods[key].qop : 0;
+                  return acc;
+                }, 0).toFixed(2)).toLocaleString()}`);
             return;
           }
         })
