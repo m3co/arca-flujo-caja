@@ -20,28 +20,62 @@
         border-radius: 8px;
         pointer-events: none;
       }
-      table[show="cost"] span.qop {
+      table div {
+        display: none;
+      }
+      table[show="cost"] div.cost {
         display: block;
       }
-      table[show="qop"] span.cost {
-        display: none;
+      table[show="cost_material"] div.cost_material {
+        display: block;
+      }
+      table[show="cost_mdo"] div.cost_mdo {
+        display: block;
+      }
+      table[show="cost_equipo"] div.cost_equipo {
+        display: block;
+      }
+      table[show="cost_herramienta"] div.cost_herramienta {
+        display: block;
+      }
+      table[show="cost_transporte"] div.cost_transporte {
+        display: block;
+      }
+      table[show="cost_subcontrato"] div.cost_subcontrato {
+        display: block;
+      }
+      table[show="qop"] div.qop {
+        display: block;
       }
     </style>
   </head>
   <body>
     <selector-projects></selector-projects>
+    <select id="selector-supply-type">
+      <option value="cost">Costo</option>
+      <option value="cost_material">Material</option>
+      <option value="cost_mdo">Mano de Obra</option>
+      <option value="cost_equipo">Equipo</option>
+      <option value="cost_herramienta">Herramienta</option>
+      <option value="cost_transporte">Transporte</option>
+      <option value="cost_subcontrato">Subcontrato</option>
+      <option value="qop">Cantidad</option>
+    </select>
     <script>
       'use strict';
       window.projects = {
         doselect: document.querySelector('selector-projects').doselect
       };
+      document.querySelector('#selector-supply-type').addEventListener('change', e => {
+        document.querySelector('table[main]').setAttribute('show', e.target.value);
+      });
     </script>
     <div class="tooltip" style="opacity:0;"></div>
     <select hidden>
       <option value="cost">Por costos</option>
       <option value="qop">Por cantidades</option>
     </select>
-    <table show="cost">
+    <table show="cost" main>
       <thead>
         <tr>
           <th name="id">Código</th>

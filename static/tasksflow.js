@@ -5,6 +5,15 @@ document.querySelector('select').addEventListener('change', e => {
 });
 var AAUIdSymbol = Symbol();
 var columns = ['id', 'description', 'unit', 'total'];
+var costs = [
+  'cost',
+  'cost_material',
+  'cost_mdo',
+  'cost_equipo',
+  'cost_herramienta',
+  'cost_transporte',
+  'cost_subcontrato'
+];
 var levels = ['brown', 'red', 'blue', 'green'];
 var date = (d) => {
   return d instanceof Date ? d.toISOString().split('T')[0] : null;
@@ -17,6 +26,21 @@ function QtakeoffCostsFlow() {
   window.tasks = tasks;
   window.periods = periods;
 
+  function drawcell(d, i, m) {
+    costs.forEach(cost => {
+      d3.select(this).append('div')
+        .classed(cost, true)
+        .text(d => d[cost]
+          ? `$${Number(Number(d[cost]).toFixed(0)).toLocaleString()}`
+          : '');
+    });
+    d3.select(this).append('div')
+      .classed('qop', true)
+      .text(d => d.qop
+        ? `${Number(Number(d.qop).toFixed(2)).toLocaleString()}`
+        : '');
+  }
+
   function doselect(row) {
     var found = tasks.find(d => d.id == row.id);
     if (found) {
@@ -27,7 +51,7 @@ function QtakeoffCostsFlow() {
         return;
       }
       found.periods[p] = Object.keys(row)
-        .filter(d => d == 'qop' || d.indexOf('cost') > -1)
+        .filter(d => d == 'qop' || d.slice(0, 4) == 'cost')
         .reduce((acc, d) => {
           acc[d] = row[d];
           return acc;
@@ -66,16 +90,13 @@ function QtakeoffCostsFlow() {
       periods.sort();
     }
     row.periods[p] = Object.keys(row)
-      .filter(d => d == 'qop' || d.indexOf('cost') > -1)
+      .filter(d => d == 'qop' || d.slice(0, 4) == 'cost')
       .reduce((acc, d) => {
         acc[d] = row[d];
         return acc;
       }, {});
     delete row.start;
     delete row.end;
-    Object.keys(row).filter(d => d.indexOf('cost') > -1).forEach(d => {
-      delete row[d];
-    });
     tasks.push(row);
     tasks.sort((a, b) => {
       if (a[AAUIdSymbol] > b[AAUIdSymbol]) return 1;
@@ -121,13 +142,13 @@ function QtakeoffCostsFlow() {
         .text(d => d.value)
         .each(function(d, i, m) {
           if (d.key === 'total') {
-            d3.select(this).append('span')
+            d3.select(this).append('div')
               .classed('cost', true)
               .text(d => `$${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
               acc += d.row.periods[key].cost ? d.row.periods[key].cost : 0;
               return acc;
             }, 0).toFixed(0)).toLocaleString()}`);
-            d3.select(this).append('span')
+            d3.select(this).append('div')
               .classed('qop', true)
               .text(d => `${Number(Object.keys(d.row.periods).reduce((acc, key, i, arr) => {
               acc += d.row.periods[key].qop ? d.row.periods[key].qop : 0;
@@ -147,10 +168,16 @@ function QtakeoffCostsFlow() {
     var trs = w.selectAll('td.flow-column')
       .data(d => periods.map(key => ({
           cost: d.periods[key] ? Number(d.periods[key].cost).toFixed(0) : null,
+          cost_material: d.periods[key] ? Number(d.periods[key].cost_material).toFixed(0) : null,
+          cost_mdo: d.periods[key] ? Number(d.periods[key].cost_mdo).toFixed(0) : null,
+          cost_equipo: d.periods[key] ? Number(d.periods[key].cost_equipo).toFixed(0) : null,
+          cost_herramienta: d.periods[key] ? Number(d.periods[key].cost_herramienta).toFixed(0) : null,
+          cost_transporte: d.periods[key] ? Number(d.periods[key].cost_transporte).toFixed(0) : null,
+          cost_subcontrato: d.periods[key] ? Number(d.periods[key].cost_subcontrato).toFixed(0) : null,
           qop: d.periods[key] ? Number(d.periods[key].qop).toFixed(2) : null,
           row: d
         })))
-      .text(d => d.cost ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}` : '')
+      .text(d => d.cost ? `updating...` : '')
       .style('color', d => {
         if (d.row.APU_defined) {
           return 'yellow';
@@ -162,18 +189,7 @@ function QtakeoffCostsFlow() {
     trs.enter()
       .append('td')
         .attr('class', 'flow-column')
-        .each(function(d, i, m) {
-          d3.select(this).append('span')
-            .classed('cost', true)
-            .text(d => d.cost
-              ? `$${Number(Number(d.cost).toFixed(0)).toLocaleString()}`
-              : '');
-          d3.select(this).append('span')
-            .classed('qop', true)
-            .text(d => d.qop
-              ? `${Number(Number(d.qop).toFixed(2)).toLocaleString()}`
-              : '');
-        })
+        .each(drawcell)
         .style('color', d => {
           if (d.row.APU_defined) {
             return 'yellow';
