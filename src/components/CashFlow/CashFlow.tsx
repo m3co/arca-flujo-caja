@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { State, ARCASocket } from 'arca-redux';
+import first from 'lodash/first';
+import last from 'lodash/last';
+import {
+  sortByEnd, sortByStart, getDateList,
+} from '../../utils';
 import './Cashflow.less';
+import Header from './Header/Header';
+import LeftBar from './LeftBar/LeftBar';
 
 interface CashFlowProps {
   socket: ARCASocket,
@@ -9,11 +16,33 @@ interface CashFlowProps {
 }
 
 const CashFlow: React.FunctionComponent<CashFlowProps> = ({
-  cashFlowInfo, cashFlowRows,
+  cashFlowInfo, cashFlowRows, socket,
 }) => {
-  console.log(cashFlowInfo, cashFlowRows, ARCASocket);
+  const calcTimeLine = useCallback(() => {
+    const sortedDataByEnd = sortByEnd([...cashFlowRows]);
+    const sortedDataByStart = sortByStart([...cashFlowRows]);
+
+    const startDate = new Date(first(sortedDataByStart).Start);
+    const endDate = new Date(last(sortedDataByEnd).End);
+
+    return getDateList(startDate, endDate);
+  }, [cashFlowRows]);
+
+  const [timeLine, setTimeLine] = useState(calcTimeLine());
+
+  useEffect(() => {
+    setTimeLine(calcTimeLine());
+  }, [calcTimeLine]);
+
   return (
-    <h1>Cash Flow</h1>
+    <div className='cash-flow__outer'>
+      <div
+        className='cash-flow__inner'
+      >
+        <Header timeLine={timeLine} />
+        <LeftBar cashFlowRows={cashFlowRows} />
+      </div>
+    </div>
   );
 };
 
