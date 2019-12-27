@@ -1,0 +1,68 @@
+@import '../../../less/colors.less';
+
+.cash-flow-header {
+  position: fixed;
+  display: flex;
+  width: calc(100vw - 15px);
+  overflow: hidden;
+  z-index: 200;
+  font-size: 15px;
+
+  &__title {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 208px;
+    height: 78px;
+    padding: 5px 10px;
+    border: 1px solid @light-gray;
+    background: @white;
+  }
+
+  &__year {
+    margin-left: 230px;
+    background: @white;
+
+    &-title {
+      height: 33px;
+      padding: 5px 10px;
+      text-align: center;
+      border: 1px solid @light-gray;
+      border-right: none;
+      word-break: break-all;
+      overflow: hidden;
+      line-height: 33px;
+  
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &-content {
+      display: flex;
+    }
+
+    &:not(:nth-of-type(2)) {
+      margin-left: 0px;
+      border-left: 1px solid @light-gray;
+    }
+  }
+
+  &__month {
+    &-title {
+      width: 100px;
+      height: 34px;
+      padding: 5px;
+      text-align: center;
+      word-break: break-all;
+      overflow: hidden;
+      line-height: 34px;
+      border-bottom: 1px solid @light-gray;
+    }
+
+    &:not(:last-child) &-title {
+      border-right: 1px solid @light-gray;
+    }
+  }
+}
