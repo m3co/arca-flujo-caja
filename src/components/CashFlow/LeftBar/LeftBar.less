@@ -1,0 +1,23 @@
+@import '../../../less/colors.less';
+
+.gantt-leftbar {
+  margin-top: 90px;
+
+  &-wrap {
+    position: fixed;
+    height: calc(100vh - 15px);
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  &__task-name {
+    display: flex;
+    justify-content: flex-end;
+    width: 208px;
+    padding: 5px 10px 4px;
+    border: 1px solid @light-gray;
+    border-top: none;
+    background: @white;
+    z-index: 10;
+  }
+}
