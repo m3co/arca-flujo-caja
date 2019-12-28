@@ -15,9 +15,4 @@ export const MONTHS: IMonthsConstant = {
   11: 'December',
 };
 
-export const SATURDAY = 6;
-export const SANDAY = 0;
-
-export const ADDITIONAL_DAYS = 3;
-
-export const CELL_WIDTH = 29;
+export const CELL_WIDTH = 111;

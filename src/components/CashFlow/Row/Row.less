@@ -1,0 +1,32 @@
+@import '../../../less/colors.less';
+
+.cash-flow-row {
+  &__task-timeline {
+    position: relative;
+    margin-left: 230px;
+    border: 1px solid @light-gray;
+    border-top: none;
+    border-left: none;
+    background: linear-gradient(90deg, @light-gray 1%, transparent 1%) -1px, @ultra-light-gray;
+    background-size: 111px 1px;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__task-duration {
+    height: 28px;
+    background: @white;
+    text-align: center;
+    line-height: 28px;
+  }
+
+  &:nth-child(3) {
+    margin-top: 90px;
+  }
+
+  &__description p {
+    color: @white;
+  }
+}
