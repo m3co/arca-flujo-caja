@@ -8,6 +8,7 @@ import {
 import './Cashflow.less';
 import Header from './Header/Header';
 import LeftBar from './LeftBar/LeftBar';
+import Row from './Row/Row';
 
 interface CashFlowProps {
   socket: ARCASocket,
@@ -41,6 +42,15 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
       >
         <Header timeLine={timeLine} />
         <LeftBar cashFlowRows={cashFlowRows} />
+        {
+          cashFlowRows.map((row, index) => (
+            <Row
+              rowInfo={row}
+              timeLine={timeLine}
+              key={row.Key + String(index)}
+            />
+          ))
+        }
       </div>
     </div>
   );
