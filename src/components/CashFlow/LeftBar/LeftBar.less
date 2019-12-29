@@ -12,12 +12,21 @@
 
   &__task-name {
     display: flex;
-    justify-content: flex-end;
-    width: 208px;
-    padding: 5px 10px;
+    justify-content: space-between;
+    width: 218px;
+    height: 28px;
+    padding: 0 0 0 10px;
     border: 1px solid @light-gray;
     border-top: none;
     background: @white;
     z-index: 10;
+    line-height: 28px;
+  }
+
+  &__total {
+    width: 50px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    text-align: center;
   }
 }

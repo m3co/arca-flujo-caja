@@ -3,7 +3,7 @@ import { State } from 'arca-redux';
 import './LeftBar.less';
 
 interface LeftBarProps {
-  cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
+  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']>,
 }
 
 const LeftBar: React.FunctionComponent<LeftBarProps> = ({
@@ -13,8 +13,11 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({
     <div className='gantt-leftbar'>
       {
         cashFlowRows.map((row, index) => (
-          <div className='gantt-leftbar__task-name' key={row.Key + String(index)}>
-            { row.Key }
+          <div className='gantt-leftbar__task-name' key={row[0].Key + String(index)}>
+            { row[0].Key }
+            <div className='gantt-leftbar__total'>
+              { row[0].TotalCost }
+            </div>
           </div>
         ))
       }

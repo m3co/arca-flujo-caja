@@ -11,13 +11,23 @@
   &__title {
     position: absolute;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 208px;
-    height: 78px;
-    padding: 5px 10px;
+    justify-content: space-between;
+    width: 228px;
+    height: 88px;
     border: 1px solid @light-gray;
     background: @white;
+
+    h1 {
+      line-height: 88px;
+      text-align: center;
+    }
+  }
+
+  &__total {
+    width: 50px;
+    border-left: 1px solid @light-gray;
+    line-height: 88px;
+    text-align: center;
   }
 
   &__year {

@@ -45,6 +45,9 @@ const Header: React.FunctionComponent<HeaderProps> = ({
     <div className='cash-flow-header'>
       <div className='cash-flow-header__title'>
         <Typography variant='h4' component='h1'>Cash Flow</Typography>
+        <div className='cash-flow-header__total'>
+          Total
+        </div>
       </div>
       {
         renderHead(getMappedDates(timeLine))

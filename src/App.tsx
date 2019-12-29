@@ -9,7 +9,6 @@ interface AppProps {
 
 interface AppState {
   cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
-  cashFlowInfo: State['Source']['Tasks-Month-CashFlow-AAU']['Info'],
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -18,14 +17,12 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       cashFlowRows: [],
-      cashFlowInfo: null,
     };
 
     props.socket.store.subscribe((): void => {
       const state: State = props.socket.store.getState();
       this.setState({
         cashFlowRows: state.Source['Tasks-Month-CashFlow-AAU'].Rows,
-        cashFlowInfo: state.Source['Tasks-Month-CashFlow-AAU'].Info,
       });
     });
 
@@ -35,11 +32,10 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    const { socket } = this.props;
-    const { cashFlowInfo, cashFlowRows } = this.state;
+    const { cashFlowRows } = this.state;
     return (
-      cashFlowRows.length && cashFlowInfo
-        ? <CashFlow socket={socket} cashFlowInfo={cashFlowInfo} cashFlowRows={cashFlowRows} />
+      cashFlowRows.length
+        ? <CashFlow cashFlowRows={cashFlowRows} />
         : <Loader />
     );
   }
