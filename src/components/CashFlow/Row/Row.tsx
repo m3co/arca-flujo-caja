@@ -4,8 +4,8 @@ import { getDateList } from '../../../utils';
 import {
   getPointOnTimeline,
 } from '../../../utils/text';
-import './Row.less';
 import { CELL_WIDTH } from '../../../utils/constant';
+import './Row.less';
 
 interface RowProps {
   rowInfo: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
