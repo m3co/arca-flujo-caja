@@ -5,10 +5,11 @@ import last from 'lodash/last';
 import {
   sortByEnd, sortByStart, getDateList,
 } from '../../utils';
-import './Cashflow.less';
 import Header from './Header/Header';
 import LeftBar from './LeftBar/LeftBar';
 import Row from './Row/Row';
+import Footer from './Footer/Footer';
+import './Cashflow.less';
 
 type styles = {
   ['margin-left']?: string,
@@ -72,10 +73,14 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
     const topPanelStyles = topPanel.style as styles;
 
     const leftBar = innerChilds[1].children[0] as HTMLElement;
-    const leftBartyles = leftBar.style as styles;
+    const leftBarStyles = leftBar.style as styles;
+
+    const footer = innerChilds[innerChilds.length - 1].children[1] as HTMLElement;
+    const footerStyles = footer.style as styles;
 
     topPanelStyles['margin-left'] = `${-left + 230}px`;
-    leftBartyles['margin-top'] = `${-top + 90}px`;
+    leftBarStyles['margin-top'] = `${-top + 90}px`;
+    footerStyles['margin-left'] = `${-left + 230}px`;
   };
 
   return (
@@ -95,6 +100,7 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
             />
           ))
         }
+        <Footer cashFlowRows={listsRows} timeLine={timeLine} />
       </div>
     </div>
   );
