@@ -7,7 +7,6 @@
   height: 28px;
   overflow: hidden;
   z-index: 200;
-  font-size: 15px;
   white-space: nowrap;
 
   &__title {
@@ -27,6 +26,7 @@
     border-left: 1px solid @light-gray;
     line-height: 28px;
     text-align: center;
+    background: @blue;
   }
 
   &-row {
@@ -49,6 +49,7 @@
       border: 1px solid @light-gray;
       border-left: none;
       background: @white;
+      box-shadow: inset 0px 2px 0px 0px @blue;
 
       &:nth-child(2) {
         margin-left: 230px;
