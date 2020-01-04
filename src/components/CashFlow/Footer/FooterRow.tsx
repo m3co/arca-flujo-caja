@@ -1,6 +1,9 @@
 import React from 'react';
 import get from 'lodash/get';
 import { State } from 'arca-redux';
+import {
+  parseToDotsFormat,
+} from '../../../utils/text';
 
 interface FooterRowProps {
   cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']>,
@@ -24,7 +27,7 @@ const FooterRow: React.FunctionComponent<FooterRowProps> = ({
         return (
           <div className='cash-flow-footer-row__item' key={`month-total-${currentMonth}`}>
             <div className='cash-flow-footer-row__item-title'>
-              { costsByCurrentMonth.reduce((sum, cost) => sum + cost, 0) }
+              { parseToDotsFormat(String(costsByCurrentMonth.reduce((sum, cost) => sum + cost, 0))) }
             </div>
           </div>
         );

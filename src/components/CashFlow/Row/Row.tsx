@@ -3,7 +3,7 @@ import { State } from 'arca-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 import { getDateList } from '../../../utils';
 import {
-  getPointOnTimeline,
+  getPointOnTimeline, parseToDotsFormat,
 } from '../../../utils/text';
 import { CELL_WIDTH } from '../../../utils/constant';
 import './Row.less';
@@ -58,7 +58,7 @@ const Row: React.FunctionComponent<RowProps> = ({
                     }}
                     className='cash-flow-row__task-duration'
                   >
-                    { rowElem.Cost }
+                    { parseToDotsFormat(String(rowElem.Cost)) }
                   </div>
                 </Tooltip>
               );

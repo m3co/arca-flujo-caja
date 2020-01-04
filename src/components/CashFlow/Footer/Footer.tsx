@@ -1,6 +1,9 @@
 import React from 'react';
 import { State } from 'arca-redux';
 import FooterRow from './FooterRow';
+import {
+  parseToDotsFormat,
+} from '../../../utils/text';
 import './Footer.less';
 
 interface FooterProps {
@@ -16,7 +19,7 @@ const Footer: React.FunctionComponent<FooterProps> = ({
       Total
       <div className='cash-flow-footer__total'>
         {
-          cashFlowRows.reduce((sum, row) => sum + row[0].TotalCost, 0)
+          parseToDotsFormat(String(cashFlowRows.reduce((sum, row) => sum + row[0].TotalCost, 0)))
         }
       </div>
     </div>

@@ -1,5 +1,8 @@
 import React from 'react';
 import { State } from 'arca-redux';
+import {
+  parseToDotsFormat,
+} from '../../../utils/text';
 import './LeftBar.less';
 
 interface LeftBarProps {
@@ -16,7 +19,7 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({
           <div className='gantt-leftbar__task-name' key={row[0].Key + String(index)}>
             { row[0].Key }
             <div className='gantt-leftbar__total'>
-              { row[0].TotalCost }
+              { parseToDotsFormat(String(row[0].TotalCost)) }
             </div>
           </div>
         ))
