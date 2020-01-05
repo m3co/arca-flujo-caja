@@ -8,7 +8,9 @@ interface AppProps {
 }
 
 interface AppState {
+  projects: State['Source']['Projects']['Rows'],
   cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
+  currentProject: number,
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -16,26 +18,62 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
+      projects: [],
       cashFlowRows: [],
+      currentProject: 1,
     };
 
     props.socket.store.subscribe((): void => {
       const state: State = props.socket.store.getState();
+
       this.setState({
         cashFlowRows: state.Source['Tasks-Month-CashFlow-AAU'].Rows,
+        projects: state.Source.Projects.Rows,
       });
     });
 
-    props.socket.Select('Tasks-Month-CashFlow-AAU');
-    props.socket.GetInfo('Tasks-Month-CashFlow-AAU');
-    props.socket.Subscribe('Tasks-Month-CashFlow-AAU');
+    props.socket.Select('Projects');
+    props.socket.Subscribe('Projects');
   }
 
+  componentDidMount() {
+    const { socket } = this.props;
+    const { currentProject } = this.state;
+
+    socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject });
+    socket.GetInfo('Tasks-Month-CashFlow-AAU');
+    socket.Subscribe('Tasks-Month-CashFlow-AAU');
+  }
+
+  setCurrentProject = (event: React.ChangeEvent<{ name?: string, value: unknown, }>) => {
+    this.setState({ currentProject: Number(event.target.value) }, () => {
+      const { socket } = this.props;
+      const { currentProject } = this.state;
+
+      socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject });
+      socket.GetInfo('Tasks-Month-CashFlow-AAU');
+      socket.Subscribe('Tasks-Month-CashFlow-AAU');
+    });
+  };
+
   render() {
-    const { cashFlowRows } = this.state;
+    const { cashFlowRows, currentProject, projects } = this.state;
+
+    const projectOptions = projects.map(project => ({
+      value: project.ID,
+      name: project.Name,
+    }));
+
     return (
       cashFlowRows.length
-        ? <CashFlow cashFlowRows={cashFlowRows} />
+        ? (
+          <CashFlow
+            cashFlowRows={cashFlowRows}
+            currentProject={currentProject}
+            setCurrentProject={this.setCurrentProject}
+            projectOptions={projectOptions}
+          />
+        )
         : <Loader />
     );
   }

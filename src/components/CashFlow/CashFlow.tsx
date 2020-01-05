@@ -18,10 +18,13 @@ type styles = {
 
 interface CashFlowProps {
   cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
+  currentProject: number,
+  setCurrentProject: (event: React.ChangeEvent<{ name?: string, value: unknown, }>) => void,
+  projectOptions: Array<{ name: number | string; value: number }>,
 }
 
 const CashFlow: React.FunctionComponent<CashFlowProps> = ({
-  cashFlowRows,
+  cashFlowRows, currentProject, setCurrentProject, projectOptions,
 }) => {
   const calcTimeLine = useCallback(() => {
     const sortedDataByEnd = sortByEnd([...cashFlowRows]);
@@ -89,7 +92,12 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
         onScroll={onScroll}
         className='cash-flow__inner'
       >
-        <Header timeLine={timeLine} />
+        <Header
+          timeLine={timeLine}
+          currentProject={currentProject}
+          setCurrentProject={setCurrentProject}
+          projectOptions={projectOptions}
+        />
         <LeftBar cashFlowRows={listsRows} />
         {
           listsRows.map((row, index) => (
