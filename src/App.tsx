@@ -2,6 +2,7 @@ import React from 'react';
 import { ARCASocket, State } from 'arca-redux';
 import CashFlow from './components/CashFlow/CashFlow';
 import Loader from './components/Loader/Loader';
+import StartPage from './components/StartPage/StartPage';
 
 interface AppProps {
   socket: ARCASocket,
@@ -20,7 +21,7 @@ class App extends React.Component<AppProps, AppState> {
     this.state = {
       projects: [],
       cashFlowRows: [],
-      currentProject: 1,
+      currentProject: 0,
     };
 
     props.socket.store.subscribe((): void => {
@@ -64,18 +65,28 @@ class App extends React.Component<AppProps, AppState> {
       name: project.Name,
     }));
 
-    return (
-      cashFlowRows.length
-        ? (
+    if (projects.length) {
+      if (cashFlowRows.length && currentProject) {
+        return (
           <CashFlow
             cashFlowRows={cashFlowRows}
             currentProject={currentProject}
             setCurrentProject={this.setCurrentProject}
             projectOptions={projectOptions}
           />
-        )
-        : <Loader />
-    );
+        );
+      }
+
+      return (
+        <StartPage
+          currentProject={currentProject}
+          setCurrentProject={this.setCurrentProject}
+          projectOptions={projectOptions}
+        />
+      );
+    }
+
+    return <Loader />;
   }
 }
 
