@@ -81,9 +81,9 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
     const footer = innerChilds[innerChilds.length - 1].children[1] as HTMLElement;
     const footerStyles = footer.style as styles;
 
-    topPanelStyles['margin-left'] = `${-left + 280}px`;
+    topPanelStyles['margin-left'] = `${-left + 451}px`;
     leftBarStyles['margin-top'] = `${-top + 90}px`;
-    footerStyles['margin-left'] = `${-left + 280}px`;
+    footerStyles['margin-left'] = `${-left + 451}px`;
   };
 
   return (

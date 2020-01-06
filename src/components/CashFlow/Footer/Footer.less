@@ -12,10 +12,9 @@
   &__title {
     position: absolute;
     display: flex;
-    justify-content: space-between;
-    width: 268px;
+    justify-content: flex-end;
+    width: 449px;
     height: 28px;
-    padding: 0 0 0 10px;
     line-height: 28px;
     border: 1px solid @light-gray;
     background: @white;
@@ -30,10 +29,14 @@
     font-size: 15px;
   }
 
+  &__total-title {
+    margin-right: 15px;
+  }
+
   &-row {
     display: flex;
     height: 28px;
-    margin-left: 280px;
+    margin-left: 451px;
     overflow: hidden;
     z-index: 50;
     font-size: 15px;
@@ -54,7 +57,7 @@
       font-size: 15px;
 
       &:nth-child(2) {
-        margin-left: 280px;
+        margin-left: 451px;
       }
     }
   }

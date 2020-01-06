@@ -12,15 +12,18 @@
 
   &__task-name {
     display: flex;
-    justify-content: space-between;
-    width: 268px;
+    justify-content: flex-end;
+    width: 449px;
     height: 28px;
-    padding: 0 0 0 10px;
     border: 1px solid @light-gray;
     border-top: none;
     background: @white;
     z-index: 10;
     line-height: 28px;
+  }
+
+  &__key {
+    margin-right: 15px;
   }
 
   &__total {
@@ -29,6 +32,26 @@
     line-height: 28px;
     text-align: center;
     box-shadow: inset -2px 0px 0px 0px @blue;
+    font-size: 15px;
+  }
+
+  &__description {
+    width: 140px;
+    padding: 0 5px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    text-align: center;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__unit {
+    width: 50px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    text-align: center;
     font-size: 15px;
   }
 }

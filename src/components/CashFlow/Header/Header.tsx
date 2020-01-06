@@ -52,6 +52,12 @@ const Header: React.FunctionComponent<HeaderProps> = ({
           onChange={setCurrentProject}
           options={projectOptions}
         />
+        <div className='cash-flow-header__unit'>
+          Unit
+        </div>
+        <div className='cash-flow-header__description'>
+          Description
+        </div>
         <div className='cash-flow-header__total'>
           Total
         </div>

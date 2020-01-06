@@ -16,7 +16,9 @@ const Footer: React.FunctionComponent<FooterProps> = ({
 }) => (
   <div className='cash-flow-footer'>
     <div className='cash-flow-footer__title'>
-      Total
+      <div className='cash-flow-footer__total-title'>
+        Total
+      </div>
       <div className='cash-flow-footer__total'>
         {
           parseToDotsFormat(String(cashFlowRows.reduce((sum, row) => sum + row[0].TotalCost, 0)))
