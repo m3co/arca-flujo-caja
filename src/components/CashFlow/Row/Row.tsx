@@ -1,6 +1,5 @@
 import React from 'react';
 import { State } from 'arca-redux';
-import Tooltip from '@material-ui/core/Tooltip';
 import { getDateList } from '../../../utils';
 import {
   getPointOnTimeline, parseToDotsFormat,
@@ -31,36 +30,17 @@ const Row: React.FunctionComponent<RowProps> = ({
               const startOnTimeLine = getPointOnTimeline(timeLine, new Date(rowElem.Start));
 
               return (
-                <Tooltip
+                <div
                   key={String(index)}
-                  title={(
-                    <div className='cash-flow-row__description'>
-                      <p>{`Project: ${rowElem.Project}`}</p>
-                      <p>{`Key: ${rowElem.Key}`}</p>
-                      <p>{`Description: ${rowElem.Description}`}</p>
-                      <p>{`Unit: ${rowElem.Unit}`}</p>
-                      <p>{`TaskStart: ${rowElem.TaskStart}`}</p>
-                      <p>{`Start: ${rowElem.Start}`}</p>
-                      <p>{`End: ${rowElem.End}`}</p>
-                      <p>{`TaskEnd: ${rowElem.TaskEnd}`}</p>
-                      <p>{`Days: ${rowElem.Days}`}</p>
-                      <p>{`TotalDays: ${rowElem.TotalDays}`}</p>
-                      <p>{`Cost: ${rowElem.Cost}`}</p>
-                      <p>{`TotalCost: ${rowElem.TotalCost}`}</p>
-                    </div>
-                  )}
+                  role='presentation'
+                  style={{
+                    width: (CELL_WIDTH * durationTask.length) - 1,
+                    marginLeft: CELL_WIDTH * startOnTimeLine,
+                  }}
+                  className='cash-flow-row__task-duration'
                 >
-                  <div
-                    role='presentation'
-                    style={{
-                      width: (CELL_WIDTH * durationTask.length) - 1,
-                      marginLeft: CELL_WIDTH * startOnTimeLine,
-                    }}
-                    className='cash-flow-row__task-duration'
-                  >
-                    { parseToDotsFormat(String(rowElem.Cost)) }
-                  </div>
-                </Tooltip>
+                  { parseToDotsFormat(String(rowElem.Cost)) }
+                </div>
               );
             })
           }
