@@ -1,5 +1,6 @@
 import React from 'react';
 import { State } from 'arca-redux';
+import { Tooltip } from '@material-ui/core';
 import {
   parseToDotsFormat,
 } from '../../../utils/text';
@@ -23,9 +24,17 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({
             <div className='gantt-leftbar__unit'>
               { row[0].Unit }
             </div>
-            <div className='gantt-leftbar__description'>
-              { row[0].Description }
-            </div>
+            <Tooltip
+              title={(
+                <div className='gantt-leftbar__description-tooltip'>
+                  { row[0].Description }
+                </div>
+              )}
+            >
+              <div className='gantt-leftbar__description'>
+                { row[0].Description }
+              </div>
+            </Tooltip>
             <div className='gantt-leftbar__total'>
               { parseToDotsFormat(String(row[0].TotalCost)) }
             </div>
