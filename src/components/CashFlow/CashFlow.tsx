@@ -100,9 +100,6 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
         />
         <Header
           timeLine={timeLine}
-          currentProject={currentProject}
-          setCurrentProject={setCurrentProject}
-          projectOptions={projectOptions}
         />
         <LeftBar cashFlowRows={listsRows} />
         {
