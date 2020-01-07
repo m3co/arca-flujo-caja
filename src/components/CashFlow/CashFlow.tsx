@@ -9,6 +9,7 @@ import Header from './Header/Header';
 import LeftBar from './LeftBar/LeftBar';
 import Row from './Row/Row';
 import Footer from './Footer/Footer';
+import TopBar from '../TopBar/TopBar';
 import './Cashflow.less';
 
 type styles = {
@@ -72,17 +73,17 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
 
     const innerChilds = event.currentTarget.children as HTMLCollection;
 
-    const topPanel = innerChilds[0].children[1] as HTMLElement;
+    const topPanel = innerChilds[1].children[1] as HTMLElement;
     const topPanelStyles = topPanel.style as styles;
 
-    const leftBar = innerChilds[1].children[0] as HTMLElement;
+    const leftBar = innerChilds[2].children[0] as HTMLElement;
     const leftBarStyles = leftBar.style as styles;
 
     const footer = innerChilds[innerChilds.length - 1].children[1] as HTMLElement;
     const footerStyles = footer.style as styles;
 
     topPanelStyles['margin-left'] = `${-left + 451}px`;
-    leftBarStyles['margin-top'] = `${-top + 90}px`;
+    leftBarStyles['margin-top'] = `${-top + 122}px`;
     footerStyles['margin-left'] = `${-left + 451}px`;
   };
 
@@ -92,6 +93,11 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
         onScroll={onScroll}
         className='cash-flow__inner'
       >
+        <TopBar
+          currentProject={currentProject}
+          setCurrentProject={setCurrentProject}
+          projectOptions={projectOptions}
+        />
         <Header
           timeLine={timeLine}
           currentProject={currentProject}

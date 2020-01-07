@@ -2,7 +2,6 @@ import React from 'react';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import './ProjectSelect.less';
 
 interface ProjectSelectProps {
@@ -18,7 +17,6 @@ const ProjectSelect: React.FunctionComponent<ProjectSelectProps> = ({
 
   return (
     <div className='cash-flow-project-select'>
-      <InputLabel htmlFor='project'>Project</InputLabel>
       <Select
         value={get(currentOption, 'value', '')}
         onChange={onChange}
