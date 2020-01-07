@@ -1,0 +1,39 @@
+@import '../../../less/colors.less';
+
+.cash-flow-row {
+  &__task-timeline {
+    position: relative;
+    height: 28px;
+    margin-left: 451px;
+    border: 1px solid @light-gray;
+    border-top: none;
+    border-left: none;
+    background: linear-gradient(90deg, @light-gray 1%, transparent 1%) -1px, @ultra-light-gray;
+    background-size: 111px 1px;
+    font-size: 15px;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__task-duration {
+    position: absolute;
+    height: 28px;
+    background: @white;
+    text-align: center;
+    line-height: 28px;
+  }
+
+  &:nth-child(4) {
+    margin-top: 122px;
+  }
+
+  &:nth-last-child(2) {
+    margin-bottom: 27px;
+  }
+
+  &__description p {
+    color: @white;
+  }
+}

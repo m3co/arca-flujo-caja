@@ -1,0 +1,16 @@
+@import '../../less/colors.less';
+
+.cash-flow-top-bar {
+  position: fixed;
+  width: calc(100% - 17px);
+  display: flex;
+  justify-content: space-between;
+  z-index: 300;
+  background: @white;
+
+  .cash-flow-project-select {
+    .MuiInput-underline:before {
+      border-color: transparent;
+    }
+  }
+}
