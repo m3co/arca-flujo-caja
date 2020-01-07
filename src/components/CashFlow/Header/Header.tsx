@@ -46,11 +46,11 @@ const Header: React.FunctionComponent<HeaderProps> = ({
         <div className='cash-flow-header__key'>
           Key
         </div>
-        <div className='cash-flow-header__unit'>
-          Unit
-        </div>
         <div className='cash-flow-header__description'>
           Description
+        </div>
+        <div className='cash-flow-header__unit'>
+          Unit
         </div>
         <div className='cash-flow-header__total'>
           Total

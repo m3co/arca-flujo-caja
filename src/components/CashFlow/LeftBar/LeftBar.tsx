@@ -21,9 +21,6 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({
             <div className='gantt-leftbar__key'>
               { row[0].Key }
             </div>
-            <div className='gantt-leftbar__unit'>
-              { row[0].Unit }
-            </div>
             <Tooltip
               title={(
                 <div className='gantt-leftbar__description-tooltip'>
@@ -35,6 +32,9 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({
                 { row[0].Description }
               </div>
             </Tooltip>
+            <div className='gantt-leftbar__unit'>
+              { row[0].Unit }
+            </div>
             <div className='gantt-leftbar__total'>
               { parseToDotsFormat(String(row[0].TotalCost)) }
             </div>
