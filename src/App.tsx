@@ -41,9 +41,11 @@ class App extends React.Component<AppProps, AppState> {
     const { socket } = this.props;
     const { currentProject } = this.state;
 
-    currentProject > 0 ?
-      socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject }) :
+    if (currentProject > 0) {
+      socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject });
+    } else {
       socket.Select('Tasks-Month-CashFlow-AAU');
+    }
 
     socket.GetInfo('Tasks-Month-CashFlow-AAU');
     socket.Subscribe('Tasks-Month-CashFlow-AAU');
