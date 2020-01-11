@@ -24,7 +24,18 @@ const ProjectSelect: React.FunctionComponent<ProjectSelectProps> = ({
           name: 'project',
           id: 'project',
         }}
+        displayEmpty
+        renderValue={selected => {
+          if ((selected as null) === '') {
+            return <em className='cash-flow-project-select__placeholder'>Project</em>;
+          }
+
+          return get(currentOption, 'name', '');
+        }}
       >
+        <MenuItem disabled value=''>
+          <em>Project</em>
+        </MenuItem>
         {
           options.map(project => (
             <MenuItem key={String(project.value)} value={project.value}>{ project.name || project.value }</MenuItem>
