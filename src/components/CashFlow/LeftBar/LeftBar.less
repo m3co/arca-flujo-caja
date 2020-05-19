@@ -1,0 +1,58 @@
+@import '../../../less/colors.less';
+
+.gantt-leftbar {
+  margin-top: 122px;
+
+  &-wrap {
+    position: fixed;
+    height: calc(100vh - 15px);
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  &__task-name {
+    display: flex;
+    justify-content: flex-end;
+    height: 28px;
+    border: 1px solid @light-gray;
+    border-top: none;
+    background: @white;
+    z-index: 10;
+    line-height: 28px;
+  }
+
+  &__key {
+    width: 75px;
+    padding: 0 5px;
+    font-size: 15px;
+  }
+
+  &__total {
+    width: 80px;
+    padding: 0 10px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    box-shadow: inset -2px 0px 0px 0px @blue;
+    font-size: 15px;
+    text-align: right;
+  }
+
+  &__description {
+    width: 201px;
+    padding: 0 5px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__unit {
+    width: 40px;
+    padding: 0 5px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    font-size: 15px;
+  }
+}

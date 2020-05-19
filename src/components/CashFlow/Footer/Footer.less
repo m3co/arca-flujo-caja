@@ -1,0 +1,64 @@
+@import '../../../less/colors.less';
+
+.cash-flow-footer {
+  position: fixed;
+  bottom: 15px;
+  width: calc(100vw - 15px);
+  height: 28px;
+  overflow: hidden;
+  z-index: 200;
+  white-space: nowrap;
+
+  &__title {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    width: 449px;
+    height: 28px;
+    line-height: 28px;
+    border: 1px solid @light-gray;
+    background: @white;
+  }
+
+  &__total {
+    width: 100px;
+    border-left: 1px solid @light-gray;
+    line-height: 28px;
+    text-align: center;
+    background: @blue;
+    font-size: 15px;
+  }
+
+  &__total-title {
+    margin-right: 15px;
+  }
+
+  &-row {
+    display: flex;
+    height: 28px;
+    margin-left: 451px;
+    overflow: hidden;
+    z-index: 50;
+    font-size: 15px;
+    background: @white;
+
+    &__item {
+      display: inline-block;
+      width: 110px;
+      height: 28px;
+      text-align: center;
+      word-break: break-all;
+      overflow: hidden;
+      line-height: 28px;
+      border: 1px solid @light-gray;
+      border-left: none;
+      background: @white;
+      box-shadow: inset 0px 2px 0px 0px @blue;
+      font-size: 15px;
+
+      &:nth-child(2) {
+        margin-left: 451px;
+      }
+    }
+  }
+}
