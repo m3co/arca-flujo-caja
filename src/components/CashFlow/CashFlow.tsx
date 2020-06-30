@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 import first from 'lodash/first';
 import last from 'lodash/last';
 import {
@@ -18,7 +18,7 @@ type styles = {
 };
 
 interface CashFlowProps {
-  cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
+  cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU'],
   currentProject: number,
   setCurrentProject: (event: React.ChangeEvent<{ name?: string, value: unknown, }>) => void,
   projectOptions: Array<{ name: number | string; value: number }>,
@@ -44,7 +44,7 @@ const CashFlow: React.FunctionComponent<CashFlowProps> = ({
   }, [calcTimeLine]);
 
   const rowsToListsOfRows = useCallback(() => {
-    const result: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']> = [];
+    const result: Array<State['Source']['Tasks-Month-CashFlow-AAU']> = [];
 
     const rowsMappedByKey = cashFlowRows.reduce((map, row) => {
       if (map.has(row.Key)) {

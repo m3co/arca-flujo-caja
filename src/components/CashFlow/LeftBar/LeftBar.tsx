@@ -1,5 +1,5 @@
 import React from 'react';
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 import { Tooltip } from '@material-ui/core';
 import {
   parseToDotsFormat,
@@ -7,7 +7,7 @@ import {
 import './LeftBar.less';
 
 interface LeftBarProps {
-  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']>,
+  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']>,
 }
 
 const LeftBar: React.FunctionComponent<LeftBarProps> = ({

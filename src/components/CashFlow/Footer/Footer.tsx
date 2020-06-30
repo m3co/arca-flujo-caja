@@ -1,5 +1,5 @@
 import React from 'react';
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 import FooterRow from './FooterRow';
 import {
   parseToDotsFormat,
@@ -7,7 +7,7 @@ import {
 import './Footer.less';
 
 interface FooterProps {
-  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']>,
+  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']>,
   timeLine: Array<Date>,
 }
 

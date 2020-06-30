@@ -1,12 +1,12 @@
 import React from 'react';
 import get from 'lodash/get';
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 import {
   parseToDotsFormat,
 } from '../../../utils/text';
 
 interface FooterRowProps {
-  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']['Rows']>,
+  cashFlowRows: Array<State['Source']['Tasks-Month-CashFlow-AAU']>,
   timeLine: Array<Date>,
 }
 
