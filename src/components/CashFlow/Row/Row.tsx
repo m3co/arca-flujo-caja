@@ -1,5 +1,5 @@
 import React from 'react';
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 import { getDateList } from '../../../utils';
 import {
   getPointOnTimeline, parseToDotsFormat,
@@ -8,7 +8,7 @@ import { CELL_WIDTH } from '../../../utils/constant';
 import './Row.less';
 
 interface RowProps {
-  rowInfo: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
+  rowInfo: State['Source']['Tasks-Month-CashFlow-AAU'],
   timeLine: Array<Date>,
 }
 

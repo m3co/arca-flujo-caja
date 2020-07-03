@@ -1,98 +1,59 @@
-import React from 'react';
-import { ARCASocket, State } from 'arca-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Store } from 'redux';
+import { getSpecificSource, State } from 'arca-redux-v4';
+import { socket } from './redux/store';
 import CashFlow from './components/CashFlow/CashFlow';
 import Loader from './components/Loader/Loader';
 import StartPage from './components/StartPage/StartPage';
 
-interface AppProps {
-  socket: ARCASocket,
-}
+const App: React.FunctionComponent = () => {
+  const projects: State['Source']['Projects'] = useSelector((state: Store) => getSpecificSource(state, 'Projects'));
+  const cashFlowRows = useSelector((state: Store) => getSpecificSource(state, 'Tasks-Month-CashFlow-AAU'));
 
-interface AppState {
-  projects: State['Source']['Projects']['Rows'],
-  cashFlowRows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows'],
-  currentProject: number,
-}
+  const [curProject, setCurProject] = useState(0);
 
-class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props);
+  useEffect(() => {
+    socket.select('Projects');
+  }, []);
 
-    this.state = {
-      projects: [],
-      cashFlowRows: [],
-      currentProject: 0,
-    };
-
-    props.socket.store.subscribe((): void => {
-      const state: State = props.socket.store.getState();
-
-      this.setState({
-        cashFlowRows: state.Source['Tasks-Month-CashFlow-AAU'].Rows,
-        projects: state.Source.Projects.Rows,
-      });
-    });
-
-    props.socket.Select('Projects');
-    props.socket.Subscribe('Projects');
-  }
-
-  componentDidMount() {
-    const { socket } = this.props;
-    const { currentProject } = this.state;
-
-    if (currentProject > 0) {
-      socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject });
-    } else {
-      socket.Select('Tasks-Month-CashFlow-AAU');
+  useEffect(() => {
+    if (curProject > 0) {
+      socket.select('Tasks-Month-CashFlow-AAU', { Project: curProject });
     }
+  }, [curProject]);
 
-    socket.GetInfo('Tasks-Month-CashFlow-AAU');
-    socket.Subscribe('Tasks-Month-CashFlow-AAU');
-  }
-
-  setCurrentProject = (event: React.ChangeEvent<{ name?: string, value: unknown, }>) => {
-    this.setState({ currentProject: Number(event.target.value) }, () => {
-      const { socket } = this.props;
-      const { currentProject } = this.state;
-
-      socket.Select('Tasks-Month-CashFlow-AAU', { Project: currentProject });
-      socket.GetInfo('Tasks-Month-CashFlow-AAU');
-      socket.Subscribe('Tasks-Month-CashFlow-AAU');
-    });
+  const setCurrentProject = (event: React.ChangeEvent<{ name?: string, value: unknown, }>) => {
+    setCurProject(Number(event.target.value));
   };
 
-  render() {
-    const { cashFlowRows, currentProject, projects } = this.state;
+  const projectOptions = projects.map(project => ({
+    value: project.ID,
+    name: project.Name,
+  }));
 
-    const projectOptions = projects.map(project => ({
-      value: project.ID,
-      name: project.Name,
-    }));
-
-    if (projects.length) {
-      if (cashFlowRows.length && currentProject) {
-        return (
-          <CashFlow
-            cashFlowRows={cashFlowRows}
-            currentProject={currentProject}
-            setCurrentProject={this.setCurrentProject}
-            projectOptions={projectOptions}
-          />
-        );
-      }
-
+  if (projects.length) {
+    if (cashFlowRows.length && curProject) {
       return (
-        <StartPage
-          currentProject={currentProject}
-          setCurrentProject={this.setCurrentProject}
+        <CashFlow
+          cashFlowRows={cashFlowRows}
+          currentProject={curProject}
+          setCurrentProject={setCurrentProject}
           projectOptions={projectOptions}
         />
       );
     }
 
-    return <Loader />;
+    return (
+      <StartPage
+        currentProject={curProject}
+        setCurrentProject={setCurrentProject}
+        projectOptions={projectOptions}
+      />
+    );
   }
-}
+
+  return <Loader />;
+};
 
 export default App;

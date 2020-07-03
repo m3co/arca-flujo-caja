@@ -1,9 +1,9 @@
-import { State } from 'arca-redux';
+import { State } from 'arca-redux-v4';
 
-export const sortByStart = (rows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows']) => rows
+export const sortByStart = (rows: State['Source']['Tasks-Month-CashFlow-AAU']) => rows
   .sort((a, b) => Date.parse(String(a.Start)) - Date.parse(String(b.Start)));
 
-export const sortByEnd = (rows: State['Source']['Tasks-Month-CashFlow-AAU']['Rows']) => rows
+export const sortByEnd = (rows: State['Source']['Tasks-Month-CashFlow-AAU']) => rows
   .sort((a, b) => Date.parse(String(a.End)) - Date.parse(String(b.End)));
 
 export const getDateList = (start: Date, end: Date) => {
